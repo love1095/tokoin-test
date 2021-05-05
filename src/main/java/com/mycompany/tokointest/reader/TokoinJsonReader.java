@@ -1,18 +1,19 @@
-package com.mycompany.tokointest.read;
+package com.mycompany.tokointest.reader;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,52 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Love
  *
  */
+@Component
 public class TokoinJsonReader {
-    
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> jsonReader(String fileName, Class <T> clazz) throws Exception {
-		File customer = getCustomerFileReader.apply(fileName);
-		JSONParser parser = new JSONParser();
-
-		List<T> cus = null;
-		try (Reader is = new FileReader(customer)) {
-			JSONArray jsonArray = (JSONArray) parser.parse(is);
-			cus = (List<T>) jsonArray.stream().map(json -> {
-				try {
-					return getObject(json, clazz);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;
-			}).collect(Collectors.toList());
-
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-		return cus;
-	}
-    
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> jsonReader(String fileName, Class <T> clazz, String type, String value) throws Exception {
-		File customer = getCustomerFileReader.apply(fileName);
-		JSONParser parser = new JSONParser();
-
-		List<T> cus = new LinkedList<>();
-		try (Reader is = new FileReader(customer)) {
-			JSONArray jsonArray = (JSONArray) parser.parse(is);
-			ObjectMapper mapper = new ObjectMapper();
-			for (Object eachCropJson : jsonArray) {
-				HashMap<String, Object> eachCropMap = (HashMap<String, Object>) mapper.convertValue(eachCropJson,
-						HashMap.class);
-				if (eachCropMap.get(type) != null && String.valueOf(eachCropMap.get(type)).contains(value)) {
-					cus.add(getObject(eachCropJson, clazz));
-				}
-			}
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-		return cus;
-	}
 
 	public static JSONArray findJsonArray(String fileName) {
 		File customer = getCustomerFileReader.apply(fileName);
@@ -109,6 +66,44 @@ public class TokoinJsonReader {
 			}
 		}
 		return cus;
+	}
+
+	public static <T> List<T> findDataFromJson(String fileName, Class<T> clazz, String type, String value) {
+		JSONArray array = findJsonArray(fileName);
+		try {
+			return searchProcess(array, clazz, type, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Collections.emptyList();
+	}
+
+	public static <T> List<T> findIdDatasFromJson(String fileName, Class<T> clazz, String type, int value) {
+		JSONArray array = findJsonArray(fileName);
+		try {
+			return searchIdProcess(array, clazz, type, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Collections.emptyList();
+	}
+
+	public static <T> List<T> findDataFromJson(JSONArray array, Class<T> clazz, String type, String value) {
+		try {
+			return searchProcess(array, clazz, type, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Collections.emptyList();
+	}
+
+	public static <T> List<T> findIdDatasFromJson(JSONArray array, Class<T> clazz, String type, int value) {
+		try {
+			return searchIdProcess(array, clazz, type, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Collections.emptyList();
 	}
 
 	static <T> T getObject(Object json, Class <T> clazz) throws Exception {

@@ -1,9 +1,11 @@
 package com.mycompany.tokointest.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.mycompany.tokointest.services.TokoinService;
+import com.mycompany.tokointest.handler.MainHandler;
 
 /**
  * TokionService.
@@ -12,13 +14,18 @@ import com.mycompany.tokointest.services.TokoinService;
  *
  */
 @SpringBootApplication
-public class TokoinApplication {
+public class TokoinApplication implements CommandLineRunner {
 
 	@Autowired
-	private static TokoinService tokoinService;
-    
+	private MainHandler mainHandler;
+
 	public static void main(String[] args) throws Exception {
-//        SpringApplication.run(SpringBootWebApplication.class, args);
+		SpringApplication.run(TokoinApplication.class, args);
 	}
 
+	@Override
+	public void run(String... args) throws Exception {
+		mainHandler.executeSearch();
+	}
 }
+
