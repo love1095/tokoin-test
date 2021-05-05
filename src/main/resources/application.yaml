@@ -1,0 +1,12 @@
+logging:
+  level:
+    root: ERROR
+    org.springframework.web: ERROR
+    com.mycompany: ERROR
+
+resource:
+  data:
+    user: /jsondata/users.json
+    ticket: /jsondata/tickets.json
+    organization: /jsondata/organizations.json
+
