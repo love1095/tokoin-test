@@ -6,7 +6,7 @@ logging:
 
 resource:
   data:
-    user: /jsondata/users.json
-    ticket: /jsondata/tickets.json
-    organization: /jsondata/organizations.json
+    user: jsondata/users.json
+    ticket: jsondata/tickets.json
+    organization: jsondata/organizations.json
 
