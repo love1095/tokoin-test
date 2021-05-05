@@ -2,10 +2,10 @@ package com.tokointest.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor @Getter
+@NoArgsConstructor @Getter
 public class User extends BaseEntity {
 
 	public static final String COLLECTION_NAME = "Users";

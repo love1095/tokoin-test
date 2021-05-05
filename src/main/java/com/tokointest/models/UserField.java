@@ -7,25 +7,33 @@ package com.tokointest.models;
  */
 public enum UserField {
 
-	_ID,
-    URL,
-    EXTERNAL_ID,
-    NAME,
-    ALIAS,
-    CREATED_AT,
-    ACTIVE,
-    VERIFIED,
-    SHARED,
-    LOCALE,
-    TIMEZONE,
-    LAST_LOGIN_AT,
-    EMAIL,
-    PHONE,
-    SIGNATURE,
-    ORGANIZATION_ID,
-    TAGS,
-    SUSPENDED,
-    ROLE;
+    ID("_id"),
+    URL("url"),
+    EXTERNAL_ID("external_id"),
+    NAME("name"),
+    ALIAS("alias"),
+    CREATED_AT("created_at"),
+    ACTIVE("active"),
+    VERIFIED("VERIFIED"),
+    SHARED("shared"),
+    LOCALE("locale"),
+    TIMEZONE("timezone"),
+    LAST_LOGIN_AT("last_login_at"),
+    EMAIL("email"),
+    PHONE("phone"),
+    SIGNATURE("signature"),
+    ORGANIZATION_ID("organization_id"),
+    TAGS("tags"),
+    SUSPENDED("suspended"),
+    ROLE("role");
+
+    private UserField (String value){
+        this.value = value;
+    }
+
+    private final String value;
+
+    public String getValue() { return value; }
 
     /**
      * Find user field by the given value.
@@ -34,12 +42,13 @@ public enum UserField {
      *		the value of enum
      * @return UserField if there is legal user field, otherwise throw exception
      */
-    public static UserField findBy(String fieldName) {
+    public static UserField findBy(String value) {
         for (UserField rewardType : UserField.values()) {
-            if (fieldName.equalsIgnoreCase(rewardType.name().toLowerCase())) {
+            if (value.equalsIgnoreCase(rewardType.getValue())) {
                 return rewardType;
             }
         }
-        return null;
+
+        throw new IllegalArgumentException("Failed to find UserField by value.");
     }
 }

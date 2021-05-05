@@ -2,12 +2,12 @@ package com.tokointest.models;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Getter
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter @NoArgsConstructor
 public class BaseEntity {
 
   public static final String ID_FIELD = "_id";
