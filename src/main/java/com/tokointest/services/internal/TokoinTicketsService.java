@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
 
@@ -83,5 +84,23 @@ public class TokoinTicketsService extends AbstractService implements TicketsServ
 	@VisibleForTesting
 	public TicketField[] getTicketFields() {
 		return TicketField.values();
+	}
+
+	@Override
+	public boolean isCorrectFields(String term, String value) {
+		boolean result = true;
+		switch (TicketField.findBy(term)) {
+		case SUBMITTER_ID:
+		case ASSIGNEE_ID:
+		case ORGANIZATION_ID:
+			result = NumberUtils.isDigits(value) ? true : false;
+			break;
+		case HAS_INCIDENTS:
+			result = value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false") ? true : false;
+			break;
+		default:
+			break;
+		}
+		return result;
 	}
 }

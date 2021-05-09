@@ -11,7 +11,8 @@ public enum SearchType {
     TICKETS("2"),
     ORGANIZATION("3"),
     ALL("4"),
-    QUIT("quit");
+    QUIT("quit"),
+    INVALID("invalid");
 
     private SearchType (String value){
         this.value = value;
@@ -35,6 +36,6 @@ public enum SearchType {
             }
         }
 
-        throw new IllegalArgumentException("Failed to find SearchType by value.");
+        return INVALID;
     }
 }

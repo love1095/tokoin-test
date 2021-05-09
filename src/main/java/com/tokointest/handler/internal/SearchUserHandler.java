@@ -1,4 +1,4 @@
-package com.tokointest.handler.search;
+package com.tokointest.handler.internal;
 
 import org.springframework.stereotype.Component;
 

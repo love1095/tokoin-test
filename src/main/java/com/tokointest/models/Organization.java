@@ -19,7 +19,7 @@ public class Organization extends BaseEntity {
 	public static final String COLLECTION_NAME = "Organizations";
 
 	@JsonProperty("_id")
-	private String id;
+	private int id;
 
 	private String name;
 

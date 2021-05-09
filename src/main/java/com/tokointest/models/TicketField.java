@@ -44,6 +44,7 @@ public enum TicketField {
 				return type;
 			}
 		}
-		return null;
+
+        return null;
 	}
 }

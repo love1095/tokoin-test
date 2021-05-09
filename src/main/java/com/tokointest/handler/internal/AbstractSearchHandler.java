@@ -1,4 +1,4 @@
-package com.tokointest.handler.search;
+package com.tokointest.handler.internal;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +19,11 @@ import com.tokointest.services.SearchService;
  */
 public abstract class AbstractSearchHandler<T extends BaseEntity> extends AbstractHandler {
 
+	public static final String HR_LINE = "-----------------------------------------------------------------------------------------------------------------------------------%n";
+	private static final String SEARCHING_FOR_VALUE_MESSAGE = "Searching %s for %s with a value of %s";
+	private static final String SEARCHING_FOR_VALUE_ERROR_MESSAGE = "Search value %s is not a type of search term %s";
 	public static final String SEARCH_TERM = "Enter search term";
 	public static final String SEARCH_VALUE = "Enter search value";
-	public static final String HR_LINE = "-----------------------------------------------------------------------------------------------------------------------------------%n";
 	public static final String LEFT_ALIGN = " %-35s   %-100s %n";
 	public static final String COLUMN_VALUE = "| Field                                | Value %n";
 	public static final String NO_RESULTS = "No results found";
@@ -40,10 +42,15 @@ public abstract class AbstractSearchHandler<T extends BaseEntity> extends Abstra
 				Arrays.copyOf(searchableFields.toArray(), searchableFields.size(), String[].class));
 		System.out.println(SEARCH_VALUE);
 		final String searchValue = getInput();
-		System.out.println(
-				String.format("Searching %s for %s with a value of %s", getEntityName(), searchTerm, searchValue));
-		List<DataResponse<T>> responses = getSearchService().process(searchTerm, searchValue);
-		printResults(responses);
+		if (getSearchService().isCorrectFields(searchTerm, searchValue)) {
+			System.out.println(
+					String.format(SEARCHING_FOR_VALUE_MESSAGE, getEntityName(), searchTerm, searchValue));
+			List<DataResponse<T>> responses = getSearchService().process(searchTerm, searchValue);
+			printResults(responses);
+		} else {
+			System.out.println(String.format(SEARCHING_FOR_VALUE_ERROR_MESSAGE, searchValue, searchTerm));
+			executeSearch();
+		}
 	}
 
 	@Override

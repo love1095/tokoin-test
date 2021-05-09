@@ -4,9 +4,9 @@ import static com.tokointest.models.SearchType.QUIT;
 
 import org.springframework.stereotype.Component;
 
-import com.tokointest.handler.search.SearchOrganizationHandler;
-import com.tokointest.handler.search.SearchTicketHandler;
-import com.tokointest.handler.search.SearchUserHandler;
+import com.tokointest.handler.internal.SearchOrganizationHandler;
+import com.tokointest.handler.internal.SearchTicketHandler;
+import com.tokointest.handler.internal.SearchUserHandler;
 import com.tokointest.models.SearchType;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,7 @@ public class TokoinSearchHandler extends AbstractHandler {
       + "        * Type '%s' to exit";
 	private static final String DASH_LINE = "\n---------------------------------------------------------------------------------------------------------------------------------";
     private static final String SEARCH_TYPE = "\nSelect 1) Users or 2) Tickets or 3) Organizations";
+    private static final String SEARCHABLE_TYPE = "\nSelect 1) Users or 2) Tickets or 3) Organizations 4) All";
 	
 	private final SearchUserHandler searchUserHandler;
 	private final SearchTicketHandler searchTicketHandler;
@@ -62,6 +63,7 @@ public class TokoinSearchHandler extends AbstractHandler {
 		case ORGANIZATION:
 			searchOrganizationHandler.executeSearch();
 			break;
+		case INVALID:
 		default:
 			System.err.println(INVALID_SEARCH_MESSAGE);
 			executeSearch();
@@ -71,7 +73,7 @@ public class TokoinSearchHandler extends AbstractHandler {
 
 	@Override
 	public void executeSearchableFields() {
-		System.out.println(SEARCH_TYPE);
+		System.out.println(SEARCHABLE_TYPE);
 		switch (SearchType.findBy(getInput())) {
 		case USERS:
 			searchUserHandler.executeSearchableFields();
@@ -89,6 +91,7 @@ public class TokoinSearchHandler extends AbstractHandler {
 			System.out.println(DASH_LINE);
 			searchOrganizationHandler.executeSearchableFields();
 			break;
+		case INVALID:
 		default:
 			System.err.println(INVALID_SEARCH_MESSAGE);
 			executeSearchableFields();

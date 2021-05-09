@@ -16,7 +16,7 @@ public class Ticket extends BaseEntity {
 	public static final String COLLECTION_NAME = "Tickets";
 
 	@JsonProperty("_id")
-	private int id;
+	private String id;
 
 	private String type;
 

@@ -41,6 +41,7 @@ public class TokoinUtilsTest {
 		assertEquals("name_0", entry.getKey());
 		assertEquals("Francisca", entry.getValue());
 	}
+
 	@SuppressWarnings("static-access")
 	@Test
 	public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenListDataIsEmpty() {
@@ -54,6 +55,7 @@ public class TokoinUtilsTest {
 		assertNotNull(actual);
 		assertTrue(actual.isEmpty());
 	}
+
 	@SuppressWarnings("static-access")
 	@Test
 	public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenListDataIsNull() {

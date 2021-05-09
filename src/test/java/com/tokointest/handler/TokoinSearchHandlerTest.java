@@ -4,11 +4,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +12,10 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.tokointest.handler.search.SearchOrganizationHandler;
-import com.tokointest.handler.search.SearchTicketHandler;
-import com.tokointest.handler.search.SearchUserHandler;
-import com.tokointest.models.DataResponse;
+import com.tokointest.handler.internal.SearchOrganizationHandler;
+import com.tokointest.handler.internal.SearchTicketHandler;
+import com.tokointest.handler.internal.SearchUserHandler;
 import com.tokointest.models.SearchType;
-import com.tokointest.models.Ticket;
 
 /**
  * Unit test for #{TokoinSearchHandler}.

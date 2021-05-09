@@ -51,7 +51,8 @@ public class TokoinOrganizationServiceTest {
 	public static final String URL = "url";
 	public static final String DETAILS = "details";
 	public static final int USER_ID = 10;
-	public static final String ORGANIZATION_ID = "id";
+	public static final int ORGANIZATION_ID = 10;
+	public static final String ORGANIZATION_ID_STRING = "10";
 	public static final List<String> EMPTY_LIST = new LinkedList<>();
 	public static final LinkedHashMap<String, String> EMPTY_MAP = new LinkedHashMap<String, String>();
 	public static final String ASSIGNEE_ID_TERM = TicketField.ASSIGNEE_ID.getValue();
@@ -91,8 +92,8 @@ public class TokoinOrganizationServiceTest {
     	when(organizationMapper.getEntityData()).thenReturn(organizationArray);
     	when(organization.getId()).thenReturn(ORGANIZATION_ID);
         doReturn(organizations).when(underTest).findData(organizationArray, Organization.class, SEARCH_TERM, SEARCH_VALUE);
-        doReturn(users).when(underTest).findData(userArray, User.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID);
-        doReturn(tickets).when(underTest).findData(ticketArray, Ticket.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID);
+        doReturn(users).when(underTest).findData(userArray, User.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID_STRING);
+        doReturn(tickets).when(underTest).findData(ticketArray, Ticket.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID_STRING);
 		doReturn(relatedEntities).when(underTest).getResponse(tickets, users);
 
 		// when
@@ -103,8 +104,8 @@ public class TokoinOrganizationServiceTest {
         assertTrue(actual.size() == 1);
         assertSame(relatedEntities, actual.get(0).getRelatedEntities());
         verify(underTest).findData(organizationArray, Organization.class, SEARCH_TERM, SEARCH_VALUE);
-		verify(underTest).findData(userArray, User.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID);
-		verify(underTest).findData(ticketArray, Ticket.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID);
+		verify(underTest).findData(userArray, User.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID_STRING);
+		verify(underTest).findData(ticketArray, Ticket.class, ORGANIZATION_ID_TERM, ORGANIZATION_ID_STRING);
         verify(underTest).getResponse(tickets, users);
     }
 	

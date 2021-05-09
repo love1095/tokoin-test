@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONArray;
 import org.springframework.stereotype.Service;
 
@@ -84,5 +85,25 @@ public class TokoinUserService extends AbstractService implements UserService{
 	@VisibleForTesting
 	public UserField[] getUserFields() {
 		return UserField.values();
+	}
+
+	@Override
+	public boolean isCorrectFields(String term, String value) {
+		boolean result = true;
+		switch (UserField.findBy(term)) {
+		case ID:
+		case ORGANIZATION_ID:
+			result = NumberUtils.isDigits(value) ? true : false;
+			break;
+		case VERIFIED:
+		case ACTIVE:
+		case SHARED:
+		case SUSPENDED:
+			result = value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false") ? true : false;
+			break;
+		default:
+			break;
+		}
+		return result;
 	}
 }

@@ -49,6 +49,6 @@ public enum UserField {
             }
         }
 
-        throw new IllegalArgumentException("Failed to find UserField by value.");
+        return null;
     }
 }

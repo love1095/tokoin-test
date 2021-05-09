@@ -1,6 +1,7 @@
 package com.tokointest.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -8,16 +9,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Function;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.annotations.VisibleForTesting;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class for read json file.
@@ -25,19 +29,47 @@ import lombok.RequiredArgsConstructor;
  * @author Love
  *
  */
-@Component @RequiredArgsConstructor
+
+@Slf4j @Component @RequiredArgsConstructor
 public class TokoinJsonReader {
 
 	public JSONArray findJsonArray(String fileName) {
-		File customer = getCustomerFileReader.apply(fileName);
+		File file = findFileBy(fileName);
 		JSONParser parser = new JSONParser();
 
-		try (Reader is = new FileReader(customer)) {
-			return (JSONArray) parser.parse(is);
+		try (Reader is = initFileReader(file)) {
+			return parseToJsonArray(parser, is);
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
+			getLogger().error("Read json file has error", e.getMessage());
 		}
 		return null;
+	}
+
+	@VisibleForTesting
+	JSONArray parseToJsonArray(JSONParser parser, Reader is) throws IOException, ParseException {
+		return (JSONArray) parser.parse(is);
+	}
+
+	@VisibleForTesting
+	Reader initFileReader(File file) throws FileNotFoundException {
+		return new FileReader(file);
+	}
+
+	@VisibleForTesting
+	File findFileBy(String fileName) {
+		ClassLoader classLoader = TokoinJsonReader.class.getClassLoader();
+		return new File(classLoader.getResource(fileName).getFile());
+	}
+
+	public static <T> List<T> findDataFromJson(JSONArray array, Class<T> clazz, String term, String value) {
+		try {
+			return searchProcess(array, clazz, term, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+			getLogger().error("Find data by json array has error", e);
+		}
+		return Collections.emptyList();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,29 +80,34 @@ public class TokoinJsonReader {
 		for (Object eachCropJson : jsonArray) {
 			HashMap<String, Object> eachCropMap = (HashMap<String, Object>) mapper.convertValue(eachCropJson,
 					HashMap.class);
-			if (eachCropMap.get(term) != null && String.valueOf(eachCropMap.get(term)).contains(value)) {
+			if (eachCropMap.get(term) != null && isSearchValue(value, eachCropMap.get(term))) {
 				cus.add(getObject(eachCropJson, clazz));
 			}
 		}
 		return cus;
 	}
 
-	public static <T> List<T> findDataFromJson(JSONArray array, Class<T> clazz, String term, String value) {
-		try {
-			return searchProcess(array, clazz, term, value);
-		} catch (Exception e) {
-			e.printStackTrace();
+	@VisibleForTesting
+	static boolean isSearchValue(String value, Object term) throws Exception {
+		if (isNumeric(value)) {
+			return (Long) term == Long.parseLong(value);
 		}
-		return Collections.emptyList();
+		return String.valueOf(term).contains(value);
 	}
 
+	@VisibleForTesting
+	static boolean isNumeric(String str) {
+		return NumberUtils.isDigits(str);
+	}
+
+	@VisibleForTesting
 	static <T> T getObject(Object json, Class<T> clazz) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), clazz);
 	}
 
-	static Function<String, File> getCustomerFileReader = filename -> {
-		ClassLoader cl = TokoinJsonReader.class.getClassLoader();
-		return new File(cl.getResource(filename).getFile());
-	};
+    @VisibleForTesting
+	static Logger getLogger() {
+        return log;
+    }
 }

@@ -38,6 +38,6 @@ public enum OrganizationField {
             }
         }
 
-        throw new IllegalArgumentException("Failed to find UserField by value.");
+        return null;
     }
 }
