@@ -5,19 +5,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.tokointest.scanner.MainHandler;
+import com.tokointest.handler.TokoinSearchHandler;
 
 /**
- * TokionService.
+ * Tokoin application class for the code challenge.
  *
  * @author Love
- *
  */
 @SpringBootApplication
 public class TokoinApplication implements CommandLineRunner {
 
 	@Autowired
-	private MainHandler mainHandler;
+	private TokoinSearchHandler searchHandler;
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(TokoinApplication.class, args);
@@ -25,7 +24,6 @@ public class TokoinApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		mainHandler.executeSearch();
+		searchHandler.searchProcess();
 	}
 }
-

@@ -39,9 +39,9 @@ public enum TicketField {
 	 * @return TicketField if there is legal field, otherwise throw exception
 	 */
 	public static TicketField findBy(String value) {
-		for (TicketField rewardType : TicketField.values()) {
-			if (value.equalsIgnoreCase(rewardType.getValue())) {
-				return rewardType;
+		for (TicketField type : TicketField.values()) {
+			if (value.equalsIgnoreCase(type.getValue())) {
+				return type;
 			}
 		}
 		return null;

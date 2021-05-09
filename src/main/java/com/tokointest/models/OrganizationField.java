@@ -10,7 +10,7 @@ public enum OrganizationField {
 	ID("_id"),
     URL("url"),
     EXTERNAL_ID("external_id"),
-    NAME("name"),
+    ORGANIZATION_NAME("name"),
     DOMAIN_NAMES("domain_names"),
     CREATED_AT("created_at"),
     DETAILS("details"),
@@ -32,9 +32,9 @@ public enum OrganizationField {
      * @return UserField if there is legal user field, otherwise throw exception
      */
     public static OrganizationField findBy(String value) {
-        for (OrganizationField rewardType : OrganizationField.values()) {
-            if (value.equalsIgnoreCase(rewardType.name().toLowerCase())) {
-                return rewardType;
+        for (OrganizationField type : OrganizationField.values()) {
+            if (value.equalsIgnoreCase(type.name())) {
+                return type;
             }
         }
 

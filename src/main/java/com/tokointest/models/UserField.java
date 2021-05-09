@@ -14,7 +14,7 @@ public enum UserField {
     ALIAS("alias"),
     CREATED_AT("created_at"),
     ACTIVE("active"),
-    VERIFIED("VERIFIED"),
+    VERIFIED("verified"),
     SHARED("shared"),
     LOCALE("locale"),
     TIMEZONE("timezone"),
@@ -43,9 +43,9 @@ public enum UserField {
      * @return UserField if there is legal user field, otherwise throw exception
      */
     public static UserField findBy(String value) {
-        for (UserField rewardType : UserField.values()) {
-            if (value.equalsIgnoreCase(rewardType.getValue())) {
-                return rewardType;
+        for (UserField type : UserField.values()) {
+            if (value.equalsIgnoreCase(type.getValue())) {
+                return type;
             }
         }
 

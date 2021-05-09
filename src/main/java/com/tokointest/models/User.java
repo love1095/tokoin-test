@@ -5,10 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class for user from database.
+ *
+ * @author Love
+ */
 @NoArgsConstructor @Getter
 public class User extends BaseEntity {
 
 	public static final String COLLECTION_NAME = "Users";
+
+	@JsonProperty("_id")
+	private int id;
+
 	private String name;
 
 	private String alias;

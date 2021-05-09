@@ -20,16 +20,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 /**
- * TokionService.
+ * Class for read json file.
  *
  * @author Love
  *
  */
-@Component
-@RequiredArgsConstructor
+@Component @RequiredArgsConstructor
 public class TokoinJsonReader {
 
-	public static JSONArray findJsonArray(String fileName) {
+	public JSONArray findJsonArray(String fileName) {
 		File customer = getCustomerFileReader.apply(fileName);
 		JSONParser parser = new JSONParser();
 
@@ -42,54 +41,30 @@ public class TokoinJsonReader {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> searchProcess(JSONArray jsonArray, Class<T> clazz, String type, String value)
+	public static <T> List<T> searchProcess(JSONArray jsonArray, Class<T> clazz, String term, String value)
 			throws Exception {
 		List<T> cus = new LinkedList<>();
 		ObjectMapper mapper = new ObjectMapper();
 		for (Object eachCropJson : jsonArray) {
 			HashMap<String, Object> eachCropMap = (HashMap<String, Object>) mapper.convertValue(eachCropJson,
 					HashMap.class);
-			if (eachCropMap.get(type) != null && String.valueOf(eachCropMap.get(type)).contains(value)) {
+			if (eachCropMap.get(term) != null && String.valueOf(eachCropMap.get(term)).contains(value)) {
 				cus.add(getObject(eachCropJson, clazz));
 			}
 		}
 		return cus;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> searchIdProcess(JSONArray jsonArray, Class<T> clazz, String type, int value)
-			throws Exception {
-		List<T> cus = new LinkedList<>();
-		ObjectMapper mapper = new ObjectMapper();
-		for (Object eachCropJson : jsonArray) {
-			HashMap<String, Object> eachCropMap = (HashMap<String, Object>) mapper.convertValue(eachCropJson,
-					HashMap.class);
-			if (eachCropMap.get(type) != null && Integer.parseInt(String.valueOf(eachCropMap.get(type))) == value) {
-				cus.add(getObject(eachCropJson, clazz));
-			}
-		}
-		return cus;
-	}
-
-	public static <T> List<T> findDataFromJson(JSONArray array, Class<T> clazz, String type, String value) {
+	public static <T> List<T> findDataFromJson(JSONArray array, Class<T> clazz, String term, String value) {
 		try {
-			return searchProcess(array, clazz, type, value);
+			return searchProcess(array, clazz, term, value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return Collections.emptyList();
 	}
 
-	public static <T> List<T> findIdDatasFromJson(JSONArray array, Class<T> clazz, String type, int value) {
-		try {
-			return searchIdProcess(array, clazz, type, value);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Collections.emptyList();
-	}
-
-	static <T> T getObject(Object json, Class <T> clazz) throws Exception {
+	static <T> T getObject(Object json, Class<T> clazz) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), clazz);
 	}
@@ -98,5 +73,4 @@ public class TokoinJsonReader {
 		ClassLoader cl = TokoinJsonReader.class.getClassLoader();
 		return new File(cl.getResource(filename).getFile());
 	};
-
 }
