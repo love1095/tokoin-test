@@ -19,8 +19,7 @@ can code a basic search application.
 
 ## Technologies
 ### Prerequisite
-- Spring boot(v2.1.9) and dependency (dependency management) must be installed.
-- JDK1.8
+- Spring boot and dependency (dependency management) must be installed.
 
 ## How to start project?
 1. Build the project with this command line: ```mvn clean install```
@@ -31,6 +30,7 @@ can code a basic search application.
 ## Test Coverage
 - Use ``Mockito`` to coverage unit tests
 - Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+- Unit test for util read file: to be update
 
 
 ## Structure
