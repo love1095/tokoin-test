@@ -25,7 +25,7 @@ public abstract class AbstractSearchHandler<T extends BaseEntity> extends Abstra
 	public static final String SEARCH_TERM = "Enter search term";
 	public static final String SEARCH_VALUE = "Enter search value";
 	public static final String LEFT_ALIGN = " %-35s   %-100s %n";
-	public static final String COLUMN_VALUE = "| Field                                | Value %n";
+	public static final String COLUMN_VALUE = "  Field                                  Value %n";
 	public static final String NO_RESULTS = "No results found";
 
 	abstract SearchService<T> getSearchService();
