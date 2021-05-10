@@ -25,6 +25,9 @@ can code a basic search application.
 ## How to start project?
 1. Build the project with this command line: ```mvn clean install```
 
+## How to run application?
+1. Build the project with this command line: ```java -jar tokointest-1.0-SNAPSHOT.jar```
+
 ## Test Coverage
 - Use ``Mockito`` to coverage unit tests
 - Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
