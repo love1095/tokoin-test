@@ -1,22 +1,21 @@
 package com.tokointest.handler;
 
-import static com.tokointest.models.SearchType.QUIT;
-
-import org.springframework.stereotype.Component;
-
 import com.tokointest.handler.internal.SearchOrganizationHandler;
 import com.tokointest.handler.internal.SearchTicketHandler;
 import com.tokointest.handler.internal.SearchUserHandler;
 import com.tokointest.models.SearchType;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import static com.tokointest.models.SearchType.QUIT;
 
 /**
  * Class for handle search process.
  *
  * @author Love
  */
-@Component @RequiredArgsConstructor
+@Component
 public class TokoinSearchHandler extends AbstractHandler {
 
     private static final String START_MESSAGE = "\nType '%s' to exit at any time. Press 'Enter' to continue";
@@ -27,12 +26,17 @@ public class TokoinSearchHandler extends AbstractHandler {
 	private static final String DASH_LINE = "\n---------------------------------------------------------------------------------------------------------------------------------";
     private static final String SEARCH_TYPE = "\nSelect 1) Users or 2) Tickets or 3) Organizations";
     private static final String SEARCHABLE_TYPE = "\nSelect 1) Users or 2) Tickets or 3) Organizations 4) All";
-	
-	private final SearchUserHandler searchUserHandler;
-	private final SearchTicketHandler searchTicketHandler;
-	private final SearchOrganizationHandler searchOrganizationHandler;
 
-	public void searchProcess() {
+    @Autowired
+    private SearchUserHandler searchUserHandler;
+
+    @Autowired
+    private SearchTicketHandler searchTicketHandler;
+
+    @Autowired
+    private SearchOrganizationHandler searchOrganizationHandler;
+
+    public void searchProcess() {
 		System.out.println(String.format(START_MESSAGE, QUIT.getValue()));
 		System.out.println();
 		System.out.println(String.format(START_OPTIONS_MESSAGE, QUIT.getValue()));

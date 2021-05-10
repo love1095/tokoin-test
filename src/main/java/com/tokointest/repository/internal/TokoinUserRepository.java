@@ -2,13 +2,13 @@ package com.tokointest.repository.internal;
 
 import javax.annotation.PostConstruct;
 
+import com.tokointest.repository.UserRepository;
+import com.tokointest.utils.TokoinJsonReader;
+
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-
-import com.tokointest.repository.UserRepository;
-import com.tokointest.utils.TokoinJsonReader;
 
 /**
  * Base class for user repository.
@@ -18,7 +18,7 @@ import com.tokointest.utils.TokoinJsonReader;
 @Repository
 public class TokoinUserRepository implements UserRepository {
 
-	@Value("${resource.data.user}")
+    @Value("${tokoin.user}")
 	private String collectionName;
 
 	@Autowired

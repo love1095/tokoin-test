@@ -37,70 +37,80 @@ import lombok.RequiredArgsConstructor;
  * @param <Ticket>
  *             type of object of ticket
  */
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class TokoinTicketsService extends AbstractService implements TicketsService {
-	private final OrganizationRepository organizationMapper;
-	private final TicketRepository ticketMapper;
-	private final UserRepository userMapper;
 
-	@Override
-	public List<DataResponse<Ticket>> process(String term, String value) {
-		List<Ticket> tickets = findData(ticketMapper.getEntityData(), Ticket.class, term, value);
-		List<DataResponse<Ticket>> response = new LinkedList<>();
-		if (!tickets.isEmpty()) {
-			for (Ticket ticket : tickets) {
-				JSONArray userArray = userMapper.getEntityData();
-				List<User> assignees = findData(userArray, User.class, ID.getValue(),
-						String.valueOf(ticket.getAssigneeId()));
-				List<User> submiters = findData(userArray, User.class, ID.getValue(),
-						String.valueOf(ticket.getSubmitterId()));
-				List<Organization> organization = findData(organizationMapper.getEntityData(), Organization.class,
-						OrganizationField.ID.getValue(), String.valueOf(ticket.getOrganizationId()));
-				response.add(new DataResponse<Ticket>(ticket, getResponse(assignees, submiters, organization)));
-			}
-		}
-		return response;
-	}
+    private final OrganizationRepository organizationMapper;
+    private final TicketRepository ticketMapper;
+    private final UserRepository userMapper;
 
-	@VisibleForTesting
-	public Map<String, String> getResponse(List<User> assignees, List<User> submiters, List<Organization> organization) {
-		List<String> names = ListUtils.union(assignees, submiters).stream().map(User::getName)
-				.collect(Collectors.toList());
-		LinkedHashMap<String, String> nameMap = addItemInListToMap(names, UserField.NAME.getValue());
-		List<String> organizationNames = organization.stream().map(Organization::getName).collect(Collectors.toList());
-		LinkedHashMap<String, String> organizationNameMap = addItemInListToMap(organizationNames,
-				ORGANIZATION_NAME.name().toLowerCase());
-		LinkedHashMap<String, String> result = organizationNameMap;
-		result.putAll(nameMap);
-		return result;
-	}
+    @Override
+    public List<DataResponse<Ticket>> process(String term, String value) {
+        List<Ticket> tickets = findData(ticketMapper.getEntityData(), Ticket.class, term,
+                value);
+        List<DataResponse<Ticket>> response = new LinkedList<>();
+        if (!tickets.isEmpty()) {
+            for (Ticket ticket : tickets) {
+                JSONArray userArray = userMapper.getEntityData();
+                List<User> assignees = findData(userArray, User.class, ID.getValue(),
+                        String.valueOf(ticket.getAssigneeId()));
+                List<User> submiters = findData(userArray, User.class, ID.getValue(),
+                        String.valueOf(ticket.getSubmitterId()));
+                List<Organization> organization = findData(
+                        organizationMapper.getEntityData(), Organization.class,
+                        OrganizationField.ID.getValue(),
+                        String.valueOf(ticket.getOrganizationId()));
+                response.add(new DataResponse<Ticket>(ticket,
+                        getResponse(assignees, submiters, organization)));
+            }
+        }
+        return response;
+    }
 
-	@Override
-	public List<String> getSearchableFields() {
-		List<TicketField> items = Arrays.asList(getTicketFields());
-		return items.stream().map(TicketField::getValue).collect(Collectors.toList());
-	}
+    @VisibleForTesting
+    public Map<String, String> getResponse(List<User> assignees, List<User> submiters,
+            List<Organization> organization) {
+        List<String> names = ListUtils.union(assignees, submiters).stream()
+                .map(User::getName).collect(Collectors.toList());
+        LinkedHashMap<String, String> nameMap = addItemInListToMap(names,
+                UserField.NAME.getValue());
+        List<String> organizationNames = organization.stream().map(Organization::getName)
+                .collect(Collectors.toList());
+        LinkedHashMap<String, String> organizationNameMap = addItemInListToMap(
+                organizationNames, ORGANIZATION_NAME.name().toLowerCase());
+        LinkedHashMap<String, String> result = organizationNameMap;
+        result.putAll(nameMap);
+        return result;
+    }
 
-	@VisibleForTesting
-	public TicketField[] getTicketFields() {
-		return TicketField.values();
-	}
+    @Override
+    public List<String> getSearchableFields() {
+        List<TicketField> items = Arrays.asList(getTicketFields());
+        return items.stream().map(TicketField::getValue).collect(Collectors.toList());
+    }
 
-	@Override
-	public boolean isCorrectFields(String term, String value) {
-		boolean result = true;
-		switch (TicketField.findBy(term)) {
-		case SUBMITTER_ID:
-		case ASSIGNEE_ID:
-		case ORGANIZATION_ID:
-			result = NumberUtils.isDigits(value) ? true : false;
-			break;
-		case HAS_INCIDENTS:
-			result = value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false") ? true : false;
-			break;
-		default:
-			break;
-		}
-		return result;
-	}
+    @VisibleForTesting
+    public TicketField[] getTicketFields() {
+        return TicketField.values();
+    }
+
+    @Override
+    public boolean isCorrectFields(String term, String value) {
+        boolean result = true;
+        switch (TicketField.findBy(term)) {
+        case SUBMITTER_ID:
+        case ASSIGNEE_ID:
+        case ORGANIZATION_ID:
+            result = NumberUtils.isDigits(value) ? true : false;
+            break;
+        case HAS_INCIDENTS:
+            result = value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")
+                    ? true : false;
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
 }

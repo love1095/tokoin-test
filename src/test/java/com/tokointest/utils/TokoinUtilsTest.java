@@ -1,10 +1,8 @@
 package com.tokointest.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Unit test for #{TokoinUtils}.
  *
@@ -22,51 +24,55 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TokoinUtilsTest {
 
-	@InjectMocks @Spy
-	private TokoinUtils underTest;
-	
-	@SuppressWarnings("static-access")
-	@Test
-	public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenCalled() {
-		// given
-		List<String> items = List.of("Francisca");
+    @InjectMocks
+    @Spy
+    private TokoinUtils underTest;
 
-		// when
-		LinkedHashMap<String, String> actual = underTest.addItemInListToMapWithKey(items, "name");
+    @SuppressWarnings("static-access")
+    @Test
+    public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenCalled() {
+        // given
+        List<String> items = Arrays.asList("Francisca");
 
-		// then
-		assertNotNull(actual);
-		assertTrue(actual.size() == 1);
-		Map.Entry<String, String> entry  = actual.entrySet().iterator().next();
-		assertEquals("name_0", entry.getKey());
-		assertEquals("Francisca", entry.getValue());
-	}
+        // when
+        LinkedHashMap<String, String> actual = underTest.addItemInListToMapWithKey(items,
+                "name");
 
-	@SuppressWarnings("static-access")
-	@Test
-	public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenListDataIsEmpty() {
-		// given
-		List<String> items = List.of();
+        // then
+        assertNotNull(actual);
+        assertTrue(actual.size() == 1);
+        Map.Entry<String, String> entry = actual.entrySet().iterator().next();
+        assertEquals("name_0", entry.getKey());
+        assertEquals("Francisca", entry.getValue());
+    }
 
-		// when
-		LinkedHashMap<String, String> actual = underTest.addItemInListToMapWithKey(items, "name");
+    @SuppressWarnings("static-access")
+    @Test
+    public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenListDataIsEmpty() {
+        // given
+        List<String> items = new LinkedList<>();
 
-		// then
-		assertNotNull(actual);
-		assertTrue(actual.isEmpty());
-	}
+        // when
+        LinkedHashMap<String, String> actual = underTest.addItemInListToMapWithKey(items,
+                "name");
 
-	@SuppressWarnings("static-access")
-	@Test
-	public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenListDataIsNull() {
-		// given
-		List<String> items = null;
+        // then
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
+    }
 
-		// when
-		LinkedHashMap<String, String> actual = underTest.addItemInListToMapWithKey(items, "name");
+    @SuppressWarnings("static-access")
+    @Test
+    public void testAddItemInListToMapWithKeyShouldReturnCorrectDataWhenListDataIsNull() {
+        // given
+        List<String> items = null;
 
-		// then
-		assertNotNull(actual);
-		assertTrue(actual.isEmpty());
-	}
+        // when
+        LinkedHashMap<String, String> actual = underTest.addItemInListToMapWithKey(items,
+                "name");
+
+        // then
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
+    }
 }
