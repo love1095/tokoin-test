@@ -15,7 +15,7 @@ import static com.tokointest.models.SearchType.QUIT;
  *
  * @author Love
  */
-@Component
+@Component()
 public class TokoinSearchHandler extends AbstractHandler {
 
     private static final String START_MESSAGE = "\nType '%s' to exit at any time. Press 'Enter' to continue";

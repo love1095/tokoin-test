@@ -17,4 +17,6 @@ public interface SearchService<T extends BaseEntity> {
 	List<String> getSearchableFields();
 
 	boolean isCorrectFields(String term, String value);
+
+    void initDatas();
 }

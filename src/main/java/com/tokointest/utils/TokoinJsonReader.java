@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,16 +35,13 @@ import lombok.extern.slf4j.Slf4j;
 public class TokoinJsonReader {
 
 	public JSONArray findJsonArray(String fileName) {
-		File file = findFileBy(fileName);
-		JSONParser parser = new JSONParser();
-
-		try (Reader is = initFileReader(file)) {
-			return parseToJsonArray(parser, is);
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-			getLogger().error("Read json file has error", e.getMessage());
-		}
-		return null;
+        try {
+            return (JSONArray) new JSONParser().parse(new InputStreamReader(
+                    TokoinJsonReader.class.getResourceAsStream(fileName)));
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 	@VisibleForTesting
@@ -78,7 +76,7 @@ public class TokoinJsonReader {
 		List<T> cus = new LinkedList<>();
 		ObjectMapper mapper = new ObjectMapper();
 		for (Object eachCropJson : jsonArray) {
-			HashMap<String, Object> eachCropMap = (HashMap<String, Object>) mapper.convertValue(eachCropJson,
+			HashMap<String, Object> eachCropMap = mapper.convertValue(eachCropJson,
 					HashMap.class);
 			if (eachCropMap.get(term) != null && isSearchValue(value, eachCropMap.get(term))) {
 				cus.add(getObject(eachCropJson, clazz));

@@ -66,13 +66,13 @@ public class TokoinUserServiceTest {
 	private TokoinUserService underTest;
 
 	@Mock
-	private OrganizationRepository organizationMapper;
+	private OrganizationRepository organizationRepository;
 
 	@Mock
-	private TicketRepository ticketMapper;
+    private TicketRepository ticketRepository;
 
 	@Mock
-	private UserRepository userMapper;
+	private UserRepository userRepository;
 
     @Test
     public void testUserSearchProcessShouldReturnCorrectDataWhenUsersAreFound() {
@@ -94,9 +94,9 @@ public class TokoinUserServiceTest {
 
         doReturn(users).when(underTest).findData(userArray, User.class, SEARCH_TERM,
                 SEARCH_VALUE);
-        when(userMapper.getEntityData()).thenReturn(userArray);
-        when(ticketMapper.getEntityData()).thenReturn(ticketArray);
-        when(organizationMapper.getEntityData()).thenReturn(organizationArray);
+        when(userRepository.getEntityData()).thenReturn(userArray);
+        when(ticketRepository.getEntityData()).thenReturn(ticketArray);
+        when(organizationRepository.getEntityData()).thenReturn(organizationArray);
         when(user.getId()).thenReturn(USER_ID);
         when(user.getOrganizationId()).thenReturn(ORGANIZATION_ID);
         doReturn(ticket1s).when(underTest).findData(ticketArray, Ticket.class,
@@ -129,7 +129,7 @@ public class TokoinUserServiceTest {
         // given
         List<User> users = Arrays.asList();
         JSONArray userArray = new JSONArray();
-        when(userMapper.getEntityData()).thenReturn(userArray);
+        when(userRepository.getEntityData()).thenReturn(userArray);
         doReturn(users).when(underTest).findData(userArray, User.class, SEARCH_TERM,
                 SEARCH_VALUE);
 

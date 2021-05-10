@@ -11,4 +11,6 @@ import org.json.simple.JSONArray;
 public interface BaseRepository {
 
 	JSONArray getEntityData();
+
+    void init();
 }

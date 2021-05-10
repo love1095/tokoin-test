@@ -43,6 +43,7 @@ public abstract class AbstractSearchHandler<T extends BaseEntity> extends Abstra
 		System.out.println(SEARCH_VALUE);
 		final String searchValue = getInput();
 		if (getSearchService().isCorrectFields(searchTerm, searchValue)) {
+            getSearchService().initDatas();
 			System.out.println(
 					String.format(SEARCHING_FOR_VALUE_MESSAGE, getEntityName(), searchTerm, searchValue));
 			List<DataResponse<T>> responses = getSearchService().process(searchTerm, searchValue);

@@ -1,17 +1,17 @@
 package com.tokointest.services.internal;
 
-import static com.tokointest.utils.TokoinJsonReader.findDataFromJson;
-import static com.tokointest.utils.TokoinUtils.addItemInListToMapWithKey;
-
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import org.json.simple.JSONArray;
-import org.springframework.stereotype.Service;
 
 import com.tokointest.models.Ticket;
 
 import lombok.RequiredArgsConstructor;
+
+import org.json.simple.JSONArray;
+import org.springframework.stereotype.Service;
+
+import static com.tokointest.utils.TokoinJsonReader.findDataFromJson;
+import static com.tokointest.utils.TokoinUtils.addItemInListToMapWithKey;
 
 /**
  * Search implement of {@link Ticket}.

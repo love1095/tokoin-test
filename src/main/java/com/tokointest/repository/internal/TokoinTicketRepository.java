@@ -1,7 +1,5 @@
 package com.tokointest.repository.internal;
 
-import javax.annotation.PostConstruct;
-
 import com.tokointest.repository.TicketRepository;
 import com.tokointest.utils.TokoinJsonReader;
 
@@ -24,11 +22,11 @@ public class TokoinTicketRepository implements TicketRepository {
 	private JSONArray jsonArray = new JSONArray();
 
 	@Autowired
-	private TokoinJsonReader jsonReader;
+	private TokoinJsonReader tokoinJsonReader;
 
-	@PostConstruct
-	public void init() {
-		jsonArray = jsonReader.findJsonArray(collectionName);
+    @Override
+    public void init() {
+        jsonArray = tokoinJsonReader.findJsonArray(collectionName);
 	}
 
 	@Override

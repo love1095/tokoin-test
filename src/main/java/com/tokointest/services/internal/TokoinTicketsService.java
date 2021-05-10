@@ -1,19 +1,11 @@
 package com.tokointest.services.internal;
 
-import static com.tokointest.models.OrganizationField.ORGANIZATION_NAME;
-import static com.tokointest.models.TicketField.ID;
-
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.json.simple.JSONArray;
-import org.springframework.stereotype.Service;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.tokointest.models.DataResponse;
@@ -30,6 +22,14 @@ import com.tokointest.services.TicketsService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.json.simple.JSONArray;
+import org.springframework.stereotype.Service;
+
+import static com.tokointest.models.OrganizationField.ORGANIZATION_NAME;
+import static com.tokointest.models.TicketField.ID;
+
 /**
  * Search implement of {@link Ticket}.
  *
@@ -41,24 +41,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TokoinTicketsService extends AbstractService implements TicketsService {
 
-    private final OrganizationRepository organizationMapper;
-    private final TicketRepository ticketMapper;
-    private final UserRepository userMapper;
+    private final OrganizationRepository organizationRepository;
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<DataResponse<Ticket>> process(String term, String value) {
-        List<Ticket> tickets = findData(ticketMapper.getEntityData(), Ticket.class, term,
+        List<Ticket> tickets = findData(ticketRepository.getEntityData(), Ticket.class, term,
                 value);
         List<DataResponse<Ticket>> response = new LinkedList<>();
         if (!tickets.isEmpty()) {
             for (Ticket ticket : tickets) {
-                JSONArray userArray = userMapper.getEntityData();
+                JSONArray userArray = userRepository.getEntityData();
                 List<User> assignees = findData(userArray, User.class, ID.getValue(),
                         String.valueOf(ticket.getAssigneeId()));
                 List<User> submiters = findData(userArray, User.class, ID.getValue(),
                         String.valueOf(ticket.getSubmitterId()));
                 List<Organization> organization = findData(
-                        organizationMapper.getEntityData(), Organization.class,
+                        organizationRepository.getEntityData(), Organization.class,
                         OrganizationField.ID.getValue(),
                         String.valueOf(ticket.getOrganizationId()));
                 response.add(new DataResponse<Ticket>(ticket,
@@ -112,5 +112,12 @@ public class TokoinTicketsService extends AbstractService implements TicketsServ
             break;
         }
         return result;
+    }
+
+    @Override
+    public void initDatas() {
+        organizationRepository.init();
+        ticketRepository.init();
+        userRepository.init();
     }
 }

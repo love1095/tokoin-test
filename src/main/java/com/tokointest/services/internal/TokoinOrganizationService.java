@@ -35,21 +35,21 @@ import static com.tokointest.models.TicketField.SUBJECT;
  */
 @Service @RequiredArgsConstructor
 public class TokoinOrganizationService extends AbstractService implements OrganizationService {
-	private final OrganizationRepository organizationMapper;
-	private final TicketRepository ticketMapper;
-	private final UserRepository userMapper;
+	private final OrganizationRepository organizationRepository;
+	private final TicketRepository ticketRepository;
+	private final UserRepository userRepository;
 
     @Override
     public List<DataResponse<Organization>> process(String term, String value) {
-        List<Organization> organizations = findData(organizationMapper.getEntityData(),
+        List<Organization> organizations = findData(organizationRepository.getEntityData(),
                 Organization.class, term, value);
         List<DataResponse<Organization>> response = new LinkedList<>();
         if (!organizations.isEmpty()) {
             for (Organization organization : organizations) {
                 int id = organization.getId();
-                List<Ticket> tickets = findData(ticketMapper.getEntityData(),
+                List<Ticket> tickets = findData(ticketRepository.getEntityData(),
                         Ticket.class, ORGANIZATION_ID.getValue(), String.valueOf(id));
-                List<User> user = findData(userMapper.getEntityData(), User.class,
+                List<User> user = findData(userRepository.getEntityData(), User.class,
                         ORGANIZATION_ID.getValue(), String.valueOf(id));
                 response.add(new DataResponse<Organization>(organization,
                         getResponse(tickets, user)));
@@ -100,5 +100,12 @@ public class TokoinOrganizationService extends AbstractService implements Organi
             break;
         }
         return result;
+    }
+
+    @Override
+    public void initDatas() {
+        organizationRepository.init();
+        ticketRepository.init();
+        userRepository.init();
     }
 }

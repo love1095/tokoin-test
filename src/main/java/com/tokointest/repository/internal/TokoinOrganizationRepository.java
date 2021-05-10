@@ -1,7 +1,5 @@
 package com.tokointest.repository.internal;
 
-import javax.annotation.PostConstruct;
-
 import com.tokointest.repository.OrganizationRepository;
 import com.tokointest.utils.TokoinJsonReader;
 
@@ -22,13 +20,13 @@ public class TokoinOrganizationRepository implements OrganizationRepository {
     private String collectionName;
 
     @Autowired
-    private TokoinJsonReader jsonReader;
+    private TokoinJsonReader tokoinJsonReader;
 
     private JSONArray jsonArray = new JSONArray();
 
-    @PostConstruct
+    @Override
     public void init() {
-        jsonArray = jsonReader.findJsonArray(collectionName);
+        jsonArray = tokoinJsonReader.findJsonArray(collectionName);
     }
 
     @Override
