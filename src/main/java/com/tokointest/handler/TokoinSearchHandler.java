@@ -36,6 +36,10 @@ public class TokoinSearchHandler extends AbstractHandler {
     @Autowired
     private SearchOrganizationHandler searchOrganizationHandler;
 
+
+    /**
+     * Process for search data from repository.
+     */
     public void searchProcess() {
 		System.out.println(String.format(START_MESSAGE, QUIT.getValue()));
 		System.out.println();
