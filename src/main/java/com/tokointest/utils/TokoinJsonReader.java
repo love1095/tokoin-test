@@ -87,7 +87,7 @@ public class TokoinJsonReader {
 
 	@VisibleForTesting
 	static boolean isSearchValue(String value, Object term) throws Exception {
-		if (isNumeric(value)) {
+		if (isNumeric(String.valueOf(term))) {
 			return (Long) term == Long.parseLong(value);
 		}
 		return String.valueOf(term).contains(value);
